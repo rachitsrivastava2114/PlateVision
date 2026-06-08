@@ -29,13 +29,10 @@
 - [Hardware Components Used](#hardware-components-used)
 - [Software \& Tools](#software--tools)
 - [Working Principle](#working-principle)
-- [Software Flow](#software-flow)
 - [Project Visualization](#project-visualization)
 - [Results](#results)
 - [Applications](#applications)
-- [Future Improvements](#future-improvements)
 - [Author](#author)
-- [License](#license)
 
 
 
@@ -151,3 +148,56 @@ Plate Vision works by capturing the vehicle number plate through a camera connec
 To understand how the data flows, try the live interactive simulator:
 
 👉 **[Launch the Plate Vision Simulator](https://rachitsrivastava2114.github.io/PlateVision/)**
+
+## Results
+
+The **Plate Vision** system was successfully implemented and tested on Raspberry Pi as an IoT and Edge AI based smart vehicle gate entry prototype. The system captures the vehicle number plate through the camera, processes the image locally, recognizes the plate number using EasyOCR, validates the detected text, logs the vehicle entry, and triggers the gate opening action.
+
+- The Raspberry Pi successfully captured real-time video using the connected camera.
+- The Region of Interest was displayed properly for placing the vehicle number plate.
+- EasyOCR detected and extracted text from the selected plate region.
+- The detected text was cleaned and validated using the Indian number plate format.
+- Valid plate numbers were stored in the Excel log file with date, time, and image name.
+- Captured vehicle images were saved automatically.
+- Duplicate entries of the same vehicle were prevented for 90 seconds.
+- The gate opening and closing operation was successfully simulated.
+- The project demonstrated local Edge AI processing without cloud dependency.
+
+---
+
+## Video Demonstration
+
+<p align="center">
+  <a href="videos/demo.mp4">
+    <img src="images/video_thumbnail.jpg" alt="Plate Vision Video Demo" width="750">
+  </a>
+</p>
+
+<p align="center">
+  <b>Figure: Plate Vision Working Video Demonstration</b>
+</p>
+
+<p align="center">
+  <a href="videos/demo.mp4"><b>▶ Watch Demo Video</b></a>
+</p>
+
+## Applications
+
+**Plate Vision** can be used in real-world smart automation and security systems where vehicle entry needs to be monitored and recorded automatically.
+
+- **Smart Parking Systems** – Automatic vehicle entry logging for parking areas.
+- **College and University Gates** – Vehicle monitoring for students, faculty, and staff.
+- **Apartment and Society Security** – Entry record maintenance for residents and visitors.
+- **Office Campus Access Control** – Automated logging of employee and visitor vehicles.
+- **Toll Booth Automation** – Number plate based vehicle identification.
+- **Residential Gate Automation** – Smart gate opening for authorized vehicles.
+- **IoT Security Projects** – Practical example of camera, Raspberry Pi, and automation integration.
+- **Edge AI Demonstration** – Shows local AI processing without depending on cloud servers.
+- **Vehicle Monitoring System** – Maintains date, time, plate number, and image-based vehicle records.
+
+
+## Author
+
+**Rachit Srivastava** <br>
+Bachelor of Technology – Electronics and Communication Engineering
+
