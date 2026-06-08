@@ -28,8 +28,6 @@
   - [System Architecture](#system-architecture)
 - [Hardware Components Used](#hardware-components-used)
 - [Software \& Tools](#software--tools)
-- [Pin Configuration](#pin-configuration)
-- [Command Mapping](#command-mapping)
 - [Working Principle](#working-principle)
 - [Software Flow](#software-flow)
 - [Project Visualization](#project-visualization)
@@ -121,4 +119,24 @@ Once a valid number plate is detected, the system saves the entry details into a
 - **Raspberry Pi OS**
 
 ---
+## Working Principle
 
+Plate Vision works by capturing the vehicle number plate through a camera connected to the Raspberry Pi and processing the image locally using OpenCV and EasyOCR. The complete recognition and logging process is performed on the Raspberry Pi itself, making the system an Edge AI based IoT application.
+
+- The Raspberry Pi starts the live camera feed using OpenCV.
+- A fixed Region of Interest is shown on the screen where the vehicle number plate should be placed.
+- After a fixed time interval, the system captures only the selected ROI instead of processing the complete frame.
+- The selected plate region is passed to EasyOCR for text recognition.
+- The detected text is cleaned by removing spaces, hyphens, and unwanted characters.
+- The cleaned text is converted into uppercase format.
+- The system checks whether the detected text matches the Indian vehicle number plate format.
+- If a valid plate number is detected, the system saves:
+-- Vehicle plate number
+-- Date
+-- Time
+-- Captured vehicle image name
+- The details are stored in an Excel file named vehicle_log.xlsx.
+- The captured vehicle image is saved inside the captured_vehicles folder.
+- After successful detection, the gate opening function is triggered.
+- The gate remains open for a fixed duration and then closes automatically.
+- To avoid repeated entries, the same vehicle number is not saved again within 90 seconds.
