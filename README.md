@@ -96,7 +96,7 @@ The system is centered around the **Raspberry Pi**, which acts as the main proce
 Once a valid number plate is detected, the system saves the entry details into an Excel file and stores the vehicle image in the captured images folder. The gate opening operation is then triggered either virtually or through GPIO-based relay control.
 
 <p align="center">
-  <img src="images/block_diagram.png" alt="System Block Diagram" width="800">
+  <img src="images/System_Architecture.png" alt="System Block Diagram" width="800">
 </p>
 
 ---
