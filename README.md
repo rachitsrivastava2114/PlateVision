@@ -142,7 +142,7 @@ Plate Vision works by capturing the vehicle number plate through a camera connec
 - To avoid repeated entries, the same vehicle number is not saved again within 90 seconds.
 
 <p align="center">
-  <img src="images/System_Architecture.png" alt="System Block Diagram" width="800">
+  <img src="images/flowchart.png" alt="Flowchart" width="800">
 </p>
 
 
