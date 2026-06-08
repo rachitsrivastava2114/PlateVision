@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plate Vision Simulator</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f4f7fb;
+      --dark: #0f172a;
+      --blue: #2563eb;
+      --green: #16a34a;
+      --orange: #f97316;
+      --purple: #7c3aed;
+      --red: #dc2626;
+      --gray: #e2e8f0;
+      --text: #1f2937;
+    }
+
+    body {
+      margin: 0;
+      padding: 28px;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--dark);
+      margin-bottom: 6px;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #475569;
+      margin-bottom: 24px;
+    }
+
+    .controls {
+      max-width: 1100px;
+      margin: 0 auto 24px auto;
+      padding: 16px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    button {
+      border: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      flex: 1 1 160px;
+      max-width: 220px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-scan { background: var(--blue); }
+    .btn-valid { background: var(--green); }
+    .btn-invalid { background: var(--orange); }
+    .btn-duplicate { background: var(--purple); }
+    .btn-reset { background: #64748b; }
+
+    .simulator-wrapper {
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      padding: 28px;
+      border-radius: 18px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+    }
+
+    .simulator {
+      min-width: 1050px;
+      display: grid;
+      grid-template-columns: 160px 60px 170px 60px 300px 60px 220px 60px 170px;
+      grid-template-rows: auto auto auto;
+      gap: 18px 8px;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .node {
+      width: 100%;
+      min-height: 115px;
+      border-radius: 16px;
+      border: 2px solid var(--gray);
+      background: white;
+      padding: 14px;
+      text-align: center;
+      font-weight: 700;
+      transition: 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .node span {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .node small {
+      margin-top: 5px;
+      font-size: 0.82rem;
+      color: #475569;
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    .arrow {
+      font-size: 2.2rem;
+      color: #334155;
+      font-weight: bold;
+    }
+
+    #vehicle {
+      grid-column: 1;
+      grid-row: 2;
+      background: #eff6ff;
+      border-color: var(--blue);
+    }
+
+    #camera {
+      grid-column: 3;
+      grid-row: 2;
+      background: #eff6ff;
+      border-color: var(--blue);
+    }
+
+    #rpi {
+      grid-column: 5;
+      grid-row: 1 / 4;
+      min-height: 420px;
+      background: #ecfdf5;
+      border-color: var(--green);
+      padding: 18px;
+    }
+
+    #outputs {
+      grid-column: 7;
+      grid-row: 1 / 3;
+      min-height: 260px;
+      background: #fff7ed;
+      border-color: var(--orange);
+    }
+
+    #gate {
+      grid-column: 9;
+      grid-row: 2;
+      background: #fef2f2;
+      border-color: var(--red);
+    }
+
+    #edge {
+      grid-column: 7;
+      grid-row: 3;
+      min-height: 130px;
+      background: #faf5ff;
+      border-color: var(--purple);
+      border-style: dashed;
+    }
+
+    .a1 {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .a2 {
+      grid-column: 4;
+      grid-row: 2;
+    }
+
+    .a3 {
+      grid-column: 6;
+      grid-row: 2;
+    }
+
+    .a4 {
+      grid-column: 8;
+      grid-row: 2;
+    }
+
+    .pipeline {
+      width: 100%;
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .process {
+      border: 2px solid #86efac;
+      background: white;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.9rem;
+      transition: 0.3s ease;
+    }
+
+    .output-list {
+      width: 100%;
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .output-item {
+      border: 2px solid #fed7aa;
+      background: white;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.9rem;
+      transition: 0.3s ease;
+    }
+
+    .active {
+      transform: scale(1.05);
+      box-shadow: 0 0 18px rgba(37, 99, 235, 0.75);
+      border-color: var(--blue) !important;
+    }
+
+    .success {
+      transform: scale(1.04);
+      box-shadow: 0 0 18px rgba(22, 163, 74, 0.75);
+      border-color: var(--green) !important;
+    }
+
+    .warning {
+      transform: scale(1.04);
+      box-shadow: 0 0 18px rgba(249, 115, 22, 0.75);
+      border-color: var(--orange) !important;
+    }
+
+    .gate-open {
+      animation: pulse 0.8s infinite alternate;
+      border-color: var(--green) !important;
+      background: #dcfce7 !important;
+    }
+
+    @keyframes pulse {
+      from {
+        box-shadow: 0 0 8px rgba(22, 163, 74, 0.5);
+      }
+      to {
+        box-shadow: 0 0 25px rgba(22, 163, 74, 1);
+      }
+    }
+
+    .status {
+      max-width: 1100px;
+      margin: 24px auto 0 auto;
+      background: #0f172a;
+      color: #e0f2fe;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-family: Consolas, monospace;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .log-box {
+      max-width: 1100px;
+      margin: 20px auto 0 auto;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: #1e40af;
+      color: white;
+      padding: 13px;
+      font-size: 14px;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 850px) {
+      body {
+        padding: 18px;
+      }
+
+      .simulator-wrapper {
+        padding: 18px;
+      }
+
+      .simulator {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .node {
+        width: 100%;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+
+      #rpi {
+        min-height: auto;
+      }
+
+      #outputs {
+        min-height: auto;
+      }
+
+      #edge {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Plate Vision Simulator</h1>
+  <p class="subtitle">
+    Interactive IoT and Edge AI visualization for Indian Number Plate Recognition and Smart Gate Entry
+  </p>
+
+  <div class="controls">
+    <button class="btn-scan" onclick="scanPlate()">Start Plate Scan</button>
+    <button class="btn-valid" onclick="validPlate()">Valid Plate Entry</button>
+    <button class="btn-invalid" onclick="invalidPlate()">Invalid Plate</button>
+    <button class="btn-duplicate" onclick="duplicatePlate()">Duplicate Entry</button>
+    <button class="btn-reset" onclick="resetSim()">Reset Simulator</button>
+  </div>
+
+  <div class="simulator-wrapper">
+    <div class="simulator">
+
+      <div id="vehicle" class="node">
+        <span>🚗</span>
+        Vehicle / Number Plate
+        <small>Indian registration plate</small>
+      </div>
+
+      <div class="arrow a1">→</div>
+
+      <div id="camera" class="node">
+        <span>📷</span>
+        Camera Module
+        <small>USB Camera / Pi Camera</small>
+      </div>
+
+      <div class="arrow a2">→</div>
+
+      <div id="rpi" class="node">
+        <span>🥧</span>
+        Raspberry Pi
+        <small>Local Edge AI Processing</small>
+
+        <div class="pipeline">
+          <div id="opencv" class="process">1. OpenCV Frame Capture</div>
+          <div id="roi" class="process">2. ROI Selection</div>
+          <div id="ocr" class="process">3. EasyOCR Text Recognition</div>
+          <div id="regex" class="process">4. Indian Plate Regex Validation</div>
+        </div>
+      </div>
+
+      <div class="arrow a3">→</div>
+
+      <div id="outputs" class="node">
+        <span>📁</span>
+        Output Logging
+        <small>Stores vehicle details locally</small>
+
+        <div class="output-list">
+          <div id="image-store" class="output-item">🖼️ Vehicle Image Storage</div>
+          <div id="excel" class="output-item">📊 Excel Log File</div>
+        </div>
+      </div>
+
+      <div class="arrow a4">→</div>
+
+      <div id="gate" class="node">
+        <span>🚧</span>
+        Smart Gate
+        <small>GPIO / Relay / Servo Motor</small>
+      </div>
+
+      <div id="edge" class="node">
+        <span>🧠</span>
+        Edge AI Note
+        <small>OCR and validation run locally on Raspberry Pi without cloud dependency</small>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="status" class="status">
+    System Idle. Waiting for plate scan...
+  </div>
+
+  <div class="log-box">
+    <table>
+      <thead>
+        <tr>
+          <th>Plate Number</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="logTable">
+        <tr>
+          <td colspan="4">No vehicle logged yet</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+    const statusBox = document.getElementById("status");
+    const logTable = document.getElementById("logTable");
+
+    const elements = [
+      "vehicle",
+      "camera",
+      "rpi",
+      "opencv",
+      "roi",
+      "ocr",
+      "regex",
+      "outputs",
+      "image-store",
+      "excel",
+      "gate",
+      "edge"
+    ];
+
+    function clearActive() {
+      elements.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove("active", "success", "warning", "gate-open");
+      });
+    }
+
+    async function scanPlate() {
+      clearActive();
+
+      statusBox.innerText = "Vehicle arrived at the gate...";
+      document.getElementById("vehicle").classList.add("active");
+      await sleep(600);
+
+      statusBox.innerText = "Camera module is capturing live video...";
+      document.getElementById("camera").classList.add("active");
+      await sleep(600);
+
+      statusBox.innerText = "Raspberry Pi is processing the frame locally...";
+      document.getElementById("rpi").classList.add("active");
+      document.getElementById("edge").classList.add("active");
+      await sleep(600);
+
+      statusBox.innerText = "OpenCV frame capture started...";
+      document.getElementById("opencv").classList.add("active");
+      await sleep(600);
+
+      statusBox.innerText = "Selecting Region of Interest for number plate...";
+      document.getElementById("roi").classList.add("active");
+      await sleep(600);
+
+      statusBox.innerText = "EasyOCR is reading plate text...";
+      document.getElementById("ocr").classList.add("active");
+      await sleep(600);
+
+      statusBox.innerText = "Detected text is being validated using Indian plate regex...";
+      document.getElementById("regex").classList.add("warning");
+    }
+
+    async function validPlate() {
+      await scanPlate();
+
+      statusBox.innerText = "Valid Indian number plate detected: RJ14AB1234";
+      document.getElementById("regex").classList.remove("warning");
+      document.getElementById("regex").classList.add("success");
+      await sleep(600);
+
+      statusBox.innerText = "Saving captured vehicle image...";
+      document.getElementById("outputs").classList.add("success");
+      document.getElementById("image-store").classList.add("success");
+      await sleep(600);
+
+      statusBox.innerText = "Logging plate number, date, time, and image name in Excel...";
+      document.getElementById("excel").classList.add("success");
+      addLog("RJ14AB1234", "Entry Allowed");
+      await sleep(600);
+
+      statusBox.innerText = "Triggering gate through GPIO / relay control...";
+      document.getElementById("gate").classList.add("gate-open");
+      await sleep(2000);
+
+      document.getElementById("gate").classList.remove("gate-open");
+      document.getElementById("gate").classList.add("success");
+      statusBox.innerText = "Gate opened for 3 seconds and closed. System continued monitoring.";
+    }
+
+    async function invalidPlate() {
+      await scanPlate();
+
+      statusBox.innerText = "Invalid plate format. Entry denied. System continues monitoring.";
+      document.getElementById("regex").classList.remove("warning");
+      document.getElementById("regex").classList.add("warning");
+
+      addLog("UNKNOWN", "Invalid / Denied");
+    }
+
+    async function duplicatePlate() {
+      await scanPlate();
+
+      statusBox.innerText = "Plate RJ14AB1234 was already logged within 90 seconds. Duplicate ignored.";
+      document.getElementById("regex").classList.remove("warning");
+      document.getElementById("regex").classList.add("success");
+      document.getElementById("outputs").classList.add("warning");
+      document.getElementById("excel").classList.add("warning");
+
+      addLog("RJ14AB1234", "Duplicate Ignored");
+    }
+
+    function addLog(plate, status) {
+      const now = new Date();
+      const date = now.toLocaleDateString();
+      const time = now.toLocaleTimeString();
+
+      if (logTable.children.length === 1 && logTable.children[0].children.length === 1) {
+        logTable.innerHTML = "";
+      }
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${plate}</td>
+        <td>${date}</td>
+        <td>${time}</td>
+        <td>${status}</td>
+      `;
+
+      logTable.prepend(row);
+    }
+
+    function resetSim() {
+      clearActive();
+      statusBox.innerText = "System Reset. Waiting for plate scan...";
+      logTable.innerHTML = `
+        <tr>
+          <td colspan="4">No vehicle logged yet</td>
+        </tr>
+      `;
+    }
+  </script>
+
+</body>
+</html>
