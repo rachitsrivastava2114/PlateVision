@@ -169,7 +169,7 @@ The **Plate Vision** system was successfully implemented and tested on Raspberry
 
 <p align="center">
   <a href="videos/demo.mp4">
-    <img src="images/video_thumbnail.jpg" alt="Plate Vision Video Demo" width="750">
+    <img src="images/video_thumbnail.png" alt="Plate Vision Video Demo" width="750">
   </a>
 </p>
 
