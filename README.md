@@ -198,6 +198,8 @@ The **Plate Vision** system was successfully implemented and tested on Raspberry
 
 ## Author
 
-**Rachit Srivastava** , **Nakshtra Agarwal** <br>
+**Rachit Srivastava**
+**Nakshtra Agarwal**
+**Shiviansh Yadav**<br>
 Bachelor of Technology – Electronics and Communication Engineering
 
