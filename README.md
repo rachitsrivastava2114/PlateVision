@@ -148,6 +148,6 @@ Plate Vision works by capturing the vehicle number plate through a camera connec
 
 ## Project Visualization
 
-To understand how the data flows from the smartphone application down to the physical hardware, try the live interactive simulator:
+To understand how the data flows, try the live interactive simulator:
 
-👉 **[Launch the TM4C123 Logic Simulator](https://rachitsrivastava2114.github.io/PlateVision/)**
+👉 **[Launch the Plate Vision Simulator](https://rachitsrivastava2114.github.io/PlateVision/)**
