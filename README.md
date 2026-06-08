@@ -131,10 +131,10 @@ Plate Vision works by capturing the vehicle number plate through a camera connec
 - The cleaned text is converted into uppercase format.
 - The system checks whether the detected text matches the Indian vehicle number plate format.
 - If a valid plate number is detected, the system saves:
--- Vehicle plate number
--- Date
--- Time
--- Captured vehicle image name
+  - Vehicle plate number
+  - Date
+  - Time
+  - Captured vehicle image name
 - The details are stored in an Excel file named vehicle_log.xlsx.
 - The captured vehicle image is saved inside the captured_vehicles folder.
 - After successful detection, the gate opening function is triggered.
