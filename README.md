@@ -12,9 +12,9 @@
     <br />
     <strong>IoT · Edge AI · Computer Vision · Smart Automation</strong>
     <br /><br />
-    <a href="https://github.com/rachitsrivastava2114/Plate-Vision/issues">Report Bug</a>
+    <a href="https://github.com/rachitsrivastava2114/PlateVision/issues">Report Bug</a>
     ·
-    <a href="https://github.com/rachitsrivastava2114/Plate-Vision">View Project</a>
+    <a href="https://github.com/rachitsrivastava2114/PlateVision">View Project</a>
   </p>
 </p>
 
