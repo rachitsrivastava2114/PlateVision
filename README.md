@@ -18,7 +18,7 @@
   </p>
 </p>
 
----
+
 
 ## Table of Contents
 
@@ -37,7 +37,7 @@
 - [Author](#author)
 - [License](#license)
 
----
+
 
 ## Project Overview
 
@@ -55,7 +55,7 @@ This project demonstrates practical concepts of:
 - Real-time camera interfacing
 - Smart parking and access control
 
----
+
 
 ## Objectives
 
@@ -68,7 +68,7 @@ This project demonstrates practical concepts of:
 - Simulate or control gate opening after successful recognition
 - Build a practical IoT and Edge AI based automation prototype
 
----
+
 
 ## Key Features
 
@@ -85,7 +85,7 @@ This project demonstrates practical concepts of:
 - 🔌 Can be extended with relay or servo motor control
 - 📊 FPS display on live camera feed
 
----
+
 
 ## System Architecture
 
@@ -97,7 +97,7 @@ Once a valid number plate is detected, the system saves the entry details into a
   <img src="images/System_Architecture.png" alt="System Block Diagram" width="800">
 </p>
 
----
+
 
 ## Hardware Components Used
 
@@ -107,7 +107,7 @@ Once a valid number plate is detected, the system saves the entry details into a
 - **Memory Card**
 - **Monitor / SSH Access**
 
----
+
 
 ## Software & Tools
 
@@ -118,7 +118,7 @@ Once a valid number plate is detected, the system saves the entry details into a
 - **Regular Expressions** – for Indian plate format validation
 - **Raspberry Pi OS**
 
----
+
 ## Working Principle
 
 Plate Vision works by capturing the vehicle number plate through a camera connected to the Raspberry Pi and processing the image locally using OpenCV and EasyOCR. The complete recognition and logging process is performed on the Raspberry Pi itself, making the system an Edge AI based IoT application.
@@ -140,3 +140,14 @@ Plate Vision works by capturing the vehicle number plate through a camera connec
 - After successful detection, the gate opening function is triggered.
 - The gate remains open for a fixed duration and then closes automatically.
 - To avoid repeated entries, the same vehicle number is not saved again within 90 seconds.
+
+<p align="center">
+  <img src="images/System_Architecture.png" alt="System Block Diagram" width="800">
+</p>
+
+
+## Project Visualization
+
+To understand how the data flows from the smartphone application down to the physical hardware, try the live interactive simulator:
+
+👉 **[Launch the TM4C123 Logic Simulator](https://rachitsrivastava2114.github.io/PlateVision/)**
