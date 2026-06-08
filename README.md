@@ -2,7 +2,7 @@
 
 <p align="center">
   <a>
-    <img src="images/plate_vision.png" alt="Plate Vision Hardware Setup" width="700">
+    <img src="images/rpi.png" alt="Plate Vision Hardware Setup" width="700">
   </a>
 
   <h3 align="center">IoT and Edge AI Based Smart Vehicle Gate Entry System</h3>
